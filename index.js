@@ -33,7 +33,7 @@ const client = new MongoClient(uri, {
 async function run() {
     try {
         // Connect the client to the server	(optional starting in v4.7)
-        await client.connect();
+        // await client.connect();
 
         const usersCollection = client.db('taskDB').collection('users');
         const tasksCollection = client.db('taskDB').collection('tasks');
@@ -105,29 +105,9 @@ async function run() {
         });
 
 
-        // Reorder tasks in MongoDB
-        // app.put("/tasks/reorder", async (req, res) => {
-        //     const { tasks } = req.body;
-
-        //     try {
-        //         for (let i = 0; i < tasks.length; i++) {
-        //             await tasksCollection.updateOne(
-        //                 { _id: new ObjectId(tasks[i]._id) },
-        //                 { $set: { order: i } }
-        //             );
-        //         }
-        //         res.status(200).json({ message: "Task order updated successfully" });
-        //     } catch (error) {
-        //         console.error("Error updating task order:", error);
-        //         res.status(500).json({ message: "Internal server error" });
-        //     }
-        // });
-
-
         app.post("/tasks", async (req, res) => {
             const { title, description, category } = req.body;
 
-            // Validate input
             if (!title || title.length > 50) {
                 return res.status(400).json({ message: "Title is required and must be under 50 characters." });
             }
@@ -140,8 +120,8 @@ async function run() {
 
             const newTask = {
                 title,
-                description: description || "", // Default empty string if not provided
-                timestamp: new Date().toISOString(), // Auto-generate timestamp
+                description: description || "", 
+                timestamp: new Date().toISOString(), 
                 category,
             };
 
@@ -162,10 +142,8 @@ async function run() {
                     return res.status(400).json({ error: "Invalid data" });
                 }
 
-                // Log sortedTasks for debugging
                 console.log("Sorted Tasks:", sortedTasks);
 
-                // Ensure ObjectId is imported
                 const bulkOps = sortedTasks.map((task, index) => ({
                     updateOne: {
                         filter: { _id: new ObjectId(task._id) },
@@ -186,7 +164,6 @@ async function run() {
                 res.status(500).json({ error: "Failed to sort tasks" });
             }
         });
-
 
 
         app.delete("/tasks/:id", async (req, res) => {
@@ -231,11 +208,8 @@ async function run() {
             }
         });
 
-
-
-        // Send a ping to confirm a successful connection
-        await client.db("admin").command({ ping: 1 });
-        console.log("Pinged your deployment. You successfully connected to MongoDB!");
+        // await client.db("admin").command({ ping: 1 });
+        // console.log("Pinged your deployment. You successfully connected to MongoDB!");
     } finally {
         // Ensures that the client will close when you finish/error
         // await client.close();
