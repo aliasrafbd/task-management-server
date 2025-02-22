@@ -41,14 +41,22 @@ async function run() {
 
         app.post('/users', async (req, res) => {
             const user = req.body;
-            const query = { email: user.email }
+            const query = { email: user.email };
             const existingUser = await usersCollection.findOne(query);
+
             if (existingUser) {
-                return res.send({ message: "User already Exist", insertedId: null })
+                return res.send({ message: "User already exists", insertedId: null });
             }
-            const result = await usersCollection.insertOne(user);
+
+            const newUser = {
+                uid: user.uid, 
+                name: user.name,
+                email: user.email,
+            };
+
+            const result = await usersCollection.insertOne(newUser);
             res.send(result);
-        })
+        });
 
         // Get all tasks
         app.get("/tasks", async (req, res) => {
@@ -120,8 +128,8 @@ async function run() {
 
             const newTask = {
                 title,
-                description: description || "", 
-                timestamp: new Date().toISOString(), 
+                description: description || "",
+                timestamp: new Date().toISOString(),
                 category,
             };
 
