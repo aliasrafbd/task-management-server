@@ -62,4 +62,8 @@ DnD Kit (@dnd-kit/core, @dnd-kit/sortable) – Provides flexible drag-and-drop f
 Axios – A promise-based HTTP client for making API calls.
 
 ✅ Linting & Code Quality
+<<<<<<< HEAD
 ESLint – A static analysis tool for identifying problematic code.
+=======
+ESLint – A static analysis tool for identifying problematic code.
+>>>>>>> a504a77c9251cf3c5c33e8098e450e507771095d
